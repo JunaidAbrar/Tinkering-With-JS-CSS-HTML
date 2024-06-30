@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fortune Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Baloo+2&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #f0f8ff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5em;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        #fortune-box {
+            border: 2px solid #ff69b4;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 350px;
+            text-align: center;
+            margin: 20px auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+        #fortune-box:hover {
+            transform: scale(1.05);
+        }
+        #fortune-box p {
+            font-family: 'Pacifico', cursive;
+            font-size: 1.5em;
+            color: #ff4500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(90deg, #f3ec78, #af4261);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 3s linear infinite;
+        }
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Fortune Land</h1>
+    <div id="fortune-box"><p></p></div>
+    <footer>
+        <!-- Footer content -->
+    </footer>
+    <script src="fortune.js"></script>
+</body>
+</html>

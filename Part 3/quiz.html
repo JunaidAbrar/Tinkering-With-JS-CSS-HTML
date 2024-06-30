@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+            color: #4CAF50;
+        }
+        form, .result {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .question {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question p {
+            margin: 0 0 10px;
+        }
+        .question label {
+            display: block;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result p {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiple Choice Quiz</h1>
+    <form id="quiz-form">
+        <label for="num-questions">Number of questions (default is 5): </label>
+        <input type="number" id="num-questions" name="num-questions" min="1" max="10" value="5">
+        <button type="button" onclick="startQuiz()">Start Quiz</button>
+    </form>
+    <div id="quiz-container"></div>
+    <script>
+        const questions = [
+            {
+                question: "What is the capital of Missouri?",
+                answers: {A: "St. Louis", B: "Jefferson City", C: "Kansas City"},
+                correct: "B"
+            },
+            {
+                question: "How many ounces in a pound?",
+                answers: {A: "10", B: "12", C: "16"},
+                correct: "C"
+            },
+            {
+                question: "Who was the first person to set foot on the moon?",
+                answers: {A: "Buzz Aldrin", B: "Michael Collins", C: "Neil Armstrong"},
+                correct: "C"
+            },
+            {
+                question: "Who holds the Major League Baseball record for most home runs in a season?",
+                answers: {A: "Barry Bonds", B: "Babe Ruth", C: "Hank Aaron"},
+                correct: "A"
+            },
+            {
+                question: "In what year was University of Liverpool founded?",
+                answers: {A: "1250", B: "1881", C: "1923"},
+                correct: "B"
+            },
+            {
+                question: "What is the largest planet in our solar system?",
+                answers: {A: "Earth", B: "Jupiter", C: "Saturn"},
+                correct: "B"
+            },
+            {
+                question: "Who wrote 'To Kill a Mockingbird'?",
+                answers: {A: "Harper Lee", B: "Mark Twain", C: "F. Scott Fitzgerald"},
+                correct: "A"
+            },
+            {
+                question: "What is the chemical symbol for gold?",
+                answers: {A: "Go", B: "Au", C: "Ag"},
+                correct: "B"
+            },
+            {
+                question: "What is the square root of 144?",
+                answers: {A: "12", B: "14", C: "16"},
+                correct: "A"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                answers: {A: "Vincent van Gogh", B: "Pablo Picasso", C: "Leonardo da Vinci"},
+                correct: "C"
+            }
+        ];
+
+        function startQuiz() {
+            const numQuestions = parseInt(document.getElementById('num-questions').value) || 5;
+            const selectedQuestions = selectRandomQuestions(numQuestions);
+            displayQuestions(selectedQuestions);
+        }
+
+        function selectRandomQuestions(num) {
+            const shuffled = questions.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, num);
+        }
+
+        function displayQuestions(selectedQuestions) {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+            selectedQuestions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                div.innerHTML = `
+                    <p>${q.question}</p>
+                    <label><input type="radio" name="q${index}" value="A"> A) ${q.answers.A}</label><br>
+                    <label><input type="radio" name="q${index}" value="B"> B) ${q.answers.B}</label><br>
+                    <label><input type="radio" name="q${index}" value="C"> C) ${q.answers.C}</label><br>
+                    <div id="result-q${index}"></div>
+                `;
+                container.appendChild(div);
+            });
+            const submitButton = document.createElement('button');
+            submitButton.type = 'button';
+            submitButton.textContent = 'Submit Answers';
+            submitButton.onclick = () => checkAnswers(selectedQuestions);
+            container.appendChild(submitButton);
+        }
+
+        function checkAnswers(selectedQuestions) {
+            let correctCount = 0;
+            selectedQuestions.forEach((q, index) => {
+                const selectedAnswer = document.querySelector(`input[name="q${index}"]:checked`);
+                const resultDiv = document.getElementById(`result-q${index}`);
+                if (selectedAnswer) {
+                    const userAnswer = selectedAnswer.value;
+                    if (userAnswer === q.correct) {
+                        resultDiv.textContent = 'CORRECT';
+                        correctCount++;
+                    } else {
+                        resultDiv.textContent = `INCORRECT: the correct answer is ${q.correct}) ${q.answers[q.correct]}`;
+                    }
+                } else {
+                    resultDiv.textContent = 'No answer selected';
+                }
+            });
+            displayResults(correctCount, selectedQuestions.length);
+        }
+
+        function displayResults(correctCount, totalQuestions) {
+            const container = document.getElementById('quiz-container');
+            const percentage = ((correctCount / totalQuestions) * 100).toFixed(2);
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = `
+                <p>You answered ${correctCount} out of ${totalQuestions} questions correctly (${percentage}%).</p>
+            `;
+            container.appendChild(resultDiv);
+        }
+    </script>
+</body>
+</html>
